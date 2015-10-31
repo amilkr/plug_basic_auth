@@ -43,7 +43,7 @@ The validation callback will be called to decide if the user is authorized or no
 
 * It has to be defined in the format &Mod.fun/1.
 
-* It arity is 1.
+* Its arity is 1.
 
 * It receives `{conn, {usr, pwd} | nil}` and must return `{conn, :authorized}` or `{conn, :unauthorized}`
 
