@@ -23,7 +23,7 @@ defmodule TopSecret do
   import Plug.Conn
   use Plug.Router
   
-  plug PlugBasicAuth, username: "Wayne", password: "Knight"
+  plug PlugBasicAuth, validation: &TopSecret.is_authorized/1
   plug :match
   plug :dispatch
   
@@ -32,8 +32,20 @@ defmodule TopSecret do
     |> put_resp_content_type("text/plain")
     |> send_resp(200, "Hello, Newman.")
   end
+
+  def is_authorized({conn, {"Tester", "McTester"}}), do: {conn, :authorized}
+  def is_authorized({conn, _}), do: {conn, :unauthorized}
 end
 ```
+
+#### The validation callback
+The validation callback will be called to decide if the user is authorized or not.
+
+* It has to be defined in the format &Mod.fun/1.
+
+* Its arity is 1.
+
+* It receives `{conn, {usr, pwd} | nil}` and must return `{conn, :authorized}` or `{conn, :unauthorized}`
 
 ## License
 
